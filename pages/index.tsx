@@ -1,45 +1,49 @@
-// Home.tsx
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
-import Header from "../components/Header";
+import { Inter } from "@next/font/google";
 
-// Estilo para o container da tela Home
 const Container = styled.div`
-  position: relative; /* Para posicionar a imagem de fundo */
+  position: relative;
 `;
 
-// Estilo para a imagem de fundo
 const BackgroundImage = styled.img`
   position: absolute;
+  margin-top: -100px;
   width: 100%;
   height: 720px;
   top: 103px;
   gap: 0px;
-  opacity: 0.7; /* Opacidade reduzida para efeito de fundo */
+  opacity: 0.8;
+`;
+
+const CenteredTextDiv = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+`;
+
+const Text = styled.p`
+  font-size: 24px;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
 `;
 
 const Home: React.FC = () => {
-  const [expandedLogo, setExpandedLogo] = React.useState(true);
-
-  useEffect(() => {
-    // Reduz o logotipo após 5 segundos
-    const timer = setTimeout(() => {
-      setExpandedLogo(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <Container>
-      <Header />
-      {/* Imagem de fundo */}
       <BackgroundImage
         src="/images/pokemon-hero.jpg"
         alt="Pokemon Hero Image"
       />
-      {/* Outros elementos da tela Home */}
+      <CenteredTextDiv>
+        <Text>
+          Cuidamos bem do seu pokémon,
+          <br />
+          para ele cuidar bem de você
+        </Text>
+      </CenteredTextDiv>
     </Container>
   );
 };
