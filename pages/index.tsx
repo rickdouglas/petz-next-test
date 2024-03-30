@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Inter } from "@next/font/google";
 
 const Container = styled.div`
   position: relative;
+  min-height: 100vh;
+  /* other styles */
 `;
 
 const BackgroundImage = styled.img`
@@ -24,9 +25,8 @@ const CenteredTextDiv = styled.div`
   text-align: center;
 `;
 
-const Text = styled.p`
+const Text = styled.h2`
   font-size: 24px;
-  font-family: "Inter", sans-serif;
   color: #ffffff;
 `;
 
