@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormContainer,
   FormDivider,
@@ -15,16 +15,117 @@ import {
   FormSelect,
   FormTitle,
   FormTotal,
-} from "../Form/Form.styles"; // Import the missing component
+} from "../Form/Form.styles";
 import Button from "../Button/Button";
 
 interface FormProps {
-  title: string; // Define the title prop
+  title: string;
   $taxa?: boolean;
 }
+type City = {
+  name: string;
+};
+
+type Region = {
+  name: string;
+};
+
+type Pokemon = {
+  name: string;
+};
 
 const Form: React.FC<FormProps> = ({ title, $taxa }) => {
-  // Pass the title prop to the component
+  const [regions, setRegions] = useState<Region[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
+  const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+  const [dates, setDates] = useState([]);
+  const [times, setTimes] = useState([]);
+
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const response = await fetch("https://pokeapi.co/api/v2/region/");
+        const data = await response.json();
+        setRegions(data.results);
+      } catch (error) {
+        console.error("Error fetching regions:", error);
+      }
+    };
+
+    fetchRegions();
+  }, []);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await fetch(
+          "https://pokeapi.co/api/v2/location/?limit=100"
+        );
+        const data = await response.json();
+        setCities(data.results);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  useEffect(() => {
+    const fetchPokemon = async () => {
+      try {
+        const response = await fetch(
+          "https://pokeapi.co/api/v2/pokemon/?limit=300"
+        );
+        const data = await response.json();
+        setPokemon(data.results);
+      } catch (error) {
+        console.error("Error fetching pokemon:", error);
+      }
+    };
+
+    fetchPokemon();
+  }, []);
+
+  useEffect(() => {
+    const fetchDates = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/scheduling/date"
+        );
+        const data = await response.json();
+        setDates(data);
+      } catch (error) {
+        console.error("Error fetching dates:", error);
+      }
+    };
+
+    fetchDates();
+  }, []);
+
+  useEffect(() => {
+    const fetchTimes = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/scheduling/time",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({}),
+          }
+        );
+        const data = await response.json();
+        setTimes(data);
+      } catch (error) {
+        console.error("Error fetching times:", error);
+      }
+    };
+
+    fetchTimes();
+  }, []);
+
   return (
     <FormContainer>
       <FormTitle>{title}</FormTitle>
@@ -47,16 +148,22 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
           <FormLabel htmlFor="regiao">Regiao</FormLabel>
           <FormSelect id="regiao">
             <option value="">Selecione sua regiao</option>
-            <option value="regiao1">Região 1</option>
-            <option value="regiao2">Região 2</option>
+            {regions.map((region, index) => (
+              <option key={index} value={region.name}>
+                {region.name}
+              </option>
+            ))}
           </FormSelect>
         </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="cidade">Cidade</FormLabel>
           <FormSelect id="cidade">
             <option value="">Selecione sua cidade</option>
-            <option value="cidade1">Cidade 1</option>
-            <option value="cidade2">Cidade 2</option>
+            {cities.map((city, index) => (
+              <option key={index} value={city.name}>
+                {city.name}
+              </option>
+            ))}
           </FormSelect>
         </FormGroup>
       </FormRowDiv>
@@ -67,17 +174,23 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
       <FormRowDiv>
         <FormLabel htmlFor="pokemon">Pokemon 1</FormLabel>
         <FormPokemonSelect>
-          <option value="pokemon">Selecione seu pokemon</option>
-          <option value="cidade1">Cidade 1</option>
-          <option value="cidade2">Cidade 2</option>
+          <option value="">Selecione seu pokemon</option>
+          {pokemon.map((poke, index) => (
+            <option key={index} value={poke.name}>
+              {poke.name}
+            </option>
+          ))}
         </FormPokemonSelect>
       </FormRowDiv>
       <FormRowDiv>
         <FormLabel htmlFor="pokemon">Pokemon 2</FormLabel>
         <FormPokemonSelect>
-          <option value="pokemon">Selecione seu pokemon</option>
-          <option value="cidade1">Cidade 1</option>
-          <option value="cidade2">Cidade 2</option>
+          <option value="">Selecione seu pokemon</option>
+          {pokemon.map((poke, index) => (
+            <option key={index} value={poke.name}>
+              {poke.name}
+            </option>
+          ))}
         </FormPokemonSelect>
       </FormRowDiv>
       <Button $secondary text="Adicionar um novo pokemon ao time... +" />
@@ -86,16 +199,22 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
           <FormLabel htmlFor="data">Data para atendimento</FormLabel>
           <FormSelect id="data">
             <option value="">Selecione uma data</option>
-            <option value="regiao1">Região 1</option>
-            <option value="regiao2">Região 2</option>
+            {dates.map((date, index) => (
+              <option key={index} value={date}>
+                {date}
+              </option>
+            ))}
           </FormSelect>
         </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="time">Horario de atendimento</FormLabel>
           <FormSelect id="time">
-            <option value="">Selecione um horario</option>
-            <option value="cidade1">Cidade 1</option>
-            <option value="cidade2">Cidade 2</option>
+            <option value="">Selecione um horário</option>
+            {times.map((time, index) => (
+              <option key={index} value={time}>
+                {time}
+              </option>
+            ))}
           </FormSelect>
         </FormGroup>
       </FormRowDiv>
