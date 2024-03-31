@@ -15,6 +15,7 @@ const QuemSomosTitle = styled.h3`
 `
 const DescriptionTitle = styled.p`
     font-size: 16px;
+    font-weight: 500;
     color: #000000;
     margin-top: 1.5rem;
 `

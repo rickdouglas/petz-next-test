@@ -6,6 +6,7 @@ const FooterContainer = styled.footer`
     background:#1d1d1d;
     padding: 20px;
     position: relative;
+    margin-top: 1.5rem;
     // CSS styles for the header container
 `;
 const FooterDescription = styled.p`

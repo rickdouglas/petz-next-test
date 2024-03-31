@@ -3,15 +3,17 @@ import { Buttons, ButtonContainer, ButtonSpan } from "./Button.styles";
 
 interface ButtonProps {
   $primary?: boolean;
+  $secondary?: boolean;
   logo?: boolean;
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
   $primary,
+  $secondary,
   logo,
   text,
   onClick,
@@ -21,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <Buttons
       $primary={$primary}
+      $secondary={$secondary}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
