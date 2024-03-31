@@ -17,114 +17,44 @@ import {
   FormTotal,
 } from "../Form/Form.styles";
 import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
+import useFetchData from "../../hooks/useFetchData";
 
 interface FormProps {
   title: string;
   $taxa?: boolean;
 }
-type City = {
-  name: string;
-};
-
-type Region = {
-  name: string;
-};
-
-type Pokemon = {
-  name: string;
-};
 
 const Form: React.FC<FormProps> = ({ title, $taxa }) => {
-  const [regions, setRegions] = useState<Region[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
-  const [pokemon, setPokemon] = useState<Pokemon[]>([]);
-  const [dates, setDates] = useState([]);
-  const [times, setTimes] = useState([]);
+  const { regions, cities, pokemon, dates, times } = useFetchData();
+  const [pokemonCount, setPokemonCount] = useState<number>(1);
+  const [total, setTotal] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDate(event.target.value);
+  };
+
+  const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTime(event.target.value);
+  };
 
   useEffect(() => {
-    const fetchRegions = async () => {
-      try {
-        const response = await fetch("https://pokeapi.co/api/v2/region/");
-        const data = await response.json();
-        setRegions(data.results);
-      } catch (error) {
-        console.error("Error fetching regions:", error);
-      }
-    };
+    setTotal(72.1 * pokemonCount);
+  }, [pokemonCount]);
 
-    fetchRegions();
-  }, []);
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const response = await fetch(
-          "https://pokeapi.co/api/v2/location/?limit=100"
-        );
-        const data = await response.json();
-        setCities(data.results);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
-    };
-
-    fetchCities();
-  }, []);
-
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      try {
-        const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon/?limit=300"
-        );
-        const data = await response.json();
-        setPokemon(data.results);
-      } catch (error) {
-        console.error("Error fetching pokemon:", error);
-      }
-    };
-
-    fetchPokemon();
-  }, []);
-
-  useEffect(() => {
-    const fetchDates = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/api/scheduling/date"
-        );
-        const data = await response.json();
-        setDates(data);
-      } catch (error) {
-        console.error("Error fetching dates:", error);
-      }
-    };
-
-    fetchDates();
-  }, []);
-
-  useEffect(() => {
-    const fetchTimes = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/api/scheduling/time",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({}),
-          }
-        );
-        const data = await response.json();
-        setTimes(data);
-      } catch (error) {
-        console.error("Error fetching times:", error);
-      }
-    };
-
-    fetchTimes();
-  }, []);
+  const handleSchedule = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setShowModal(true);
+  };
+  const handleAddPokemon = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (pokemonCount < 6) {
+      setPokemonCount(pokemonCount + 1);
+    }
+  };
 
   return (
     <FormContainer>
@@ -171,33 +101,35 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
       <FormRegisterDiscription>
         Atendemos até 6 pokemons por vez
       </FormRegisterDiscription>
-      <FormRowDiv>
-        <FormLabel htmlFor="pokemon">Pokemon 1</FormLabel>
-        <FormPokemonSelect>
-          <option value="">Selecione seu pokemon</option>
-          {pokemon.map((poke, index) => (
-            <option key={index} value={poke.name}>
-              {poke.name}
-            </option>
-          ))}
-        </FormPokemonSelect>
-      </FormRowDiv>
-      <FormRowDiv>
-        <FormLabel htmlFor="pokemon">Pokemon 2</FormLabel>
-        <FormPokemonSelect>
-          <option value="">Selecione seu pokemon</option>
-          {pokemon.map((poke, index) => (
-            <option key={index} value={poke.name}>
-              {poke.name}
-            </option>
-          ))}
-        </FormPokemonSelect>
-      </FormRowDiv>
-      <Button $secondary text="Adicionar um novo pokemon ao time... +" />
+      {Array.from({ length: pokemonCount }, (_, index) => (
+        <FormRowDiv key={index}>
+          <FormLabel htmlFor={`pokemon${index + 1}`}>
+            Pokemon {index + 1}
+          </FormLabel>
+          <FormPokemonSelect>
+            <option value="">Selecione seu pokemon</option>
+            {pokemon.map((poke, index) => (
+              <option key={index} value={poke.name}>
+                {poke.name}
+              </option>
+            ))}
+          </FormPokemonSelect>
+        </FormRowDiv>
+      ))}
+      <Button
+        onClick={handleAddPokemon}
+        id="add-pokemon"
+        $secondary
+        text="Adicionar um novo pokemon ao time... +"
+      />
       <FormRowDiv>
         <FormGroup>
           <FormLabel htmlFor="data">Data para atendimento</FormLabel>
-          <FormSelect id="data">
+          <FormSelect
+            id="data"
+            value={selectedDate}
+            onChange={handleDateChange}
+          >
             <option value="">Selecione uma data</option>
             {dates.map((date, index) => (
               <option key={index} value={date}>
@@ -208,7 +140,11 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
         </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="time">Horario de atendimento</FormLabel>
-          <FormSelect id="time">
+          <FormSelect
+            id="time"
+            value={selectedTime}
+            onChange={handleTimeChange}
+          >
             <option value="">Selecione um horário</option>
             {times.map((time, index) => (
               <option key={index} value={time}>
@@ -218,12 +154,13 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
           </FormSelect>
         </FormGroup>
       </FormRowDiv>
+
       <FormDivider />
       <FormEndDiv>
         <FormEndDiscription>
           Numero de pokemons a serem atendidos
         </FormEndDiscription>
-        <FormEndData>01</FormEndData>
+        <FormEndData>{pokemonCount}</FormEndData>
       </FormEndDiv>
       <FormEndDiv>
         <FormEndDiscription>
@@ -233,7 +170,7 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
       </FormEndDiv>
       <FormEndDiv>
         <FormEndDiscription>Subtotal</FormEndDiscription>
-        <FormEndData>R$ 70.00</FormEndData>
+        <FormEndData>{`R$ ${70 * pokemonCount.toFixed(2)}`}</FormEndData>
       </FormEndDiv>
       <FormEndDiv>
         <FormEndDiscription>Taxa geracional</FormEndDiscription>
@@ -246,8 +183,19 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
         </FormEndDiscription>
       </FormEndDiv>
       <FormEndDiv>
-        <FormTotal>Valor Total: R$ 72.10</FormTotal>
-        <Button text="Concluir Agendamento" />
+        <FormTotal>{`Valor Total: R$ ${total.toFixed(2)}`}</FormTotal>
+        <Button
+          onClick={handleSchedule}
+          id="schedule"
+          text="Concluir Agendamento"
+        />
+        {showModal && (
+          <Modal
+            date={selectedDate}
+            time={selectedTime}
+            quantity={pokemonCount}
+          />
+        )}
       </FormEndDiv>
     </FormContainer>
   );
