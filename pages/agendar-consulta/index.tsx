@@ -4,7 +4,7 @@ import Container from "./AgendarConsulta.styles";
 
 export default function AgendarConsulta() {
   return (
-    <>
+    <div data-testid="agendar-consulta">
       <Header
         navs="Home > Agendar Consulta"
         title="Agendar Consulta"
@@ -13,6 +13,6 @@ export default function AgendarConsulta() {
       <Container>
         <Form title="Preencha o formulário abaixo para agendar sua consulta" />
       </Container>
-    </>
+    </div>
   );
 }

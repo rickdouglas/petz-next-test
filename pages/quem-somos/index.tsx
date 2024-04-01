@@ -8,7 +8,7 @@ import {
 
 export default function QuemSomos() {
   return (
-    <>
+    <div data-testid="quem-somos">
       <Header
         navs="Home > Quem Somos"
         title="Quem Somos"
@@ -71,6 +71,6 @@ export default function QuemSomos() {
           dapibus nec at enim.
         </Description>
       </QuemSomosContainer>
-    </>
+    </div>
   );
 }
