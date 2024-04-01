@@ -10,6 +10,7 @@ const FormContainer = styled.form`
     padding: 1rem;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+    
 `
 
 const FormTitle = styled.h2`
@@ -44,6 +45,7 @@ const FormLabel = styled.label`
 
 const FormInput = styled.input`
     width: 265px;
+    padding: 8px;
     color: #747474;
     height: 45px;
     top: 407px;
@@ -57,6 +59,7 @@ const FormInput = styled.input`
 
 const FormSelect = styled.select`
     width: 265px;
+    padding: 8px;
     height: 45px;
     color: #747474;
     top: 507px;

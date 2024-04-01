@@ -6,7 +6,6 @@ const FooterContainer = styled.footer`
     background:#1d1d1d;
     padding: 20px;
     position: relative;
-    margin-top: 1.5rem;
 `;
 const FooterDescription = styled.p`
 color: #ffffff;

@@ -4,21 +4,18 @@ import styled from "styled-components";
 const Container = styled.div`
   position: relative;
   min-height: 100vh;
-  /* other styles */
 `;
 
 const BackgroundImage = styled.img`
   position: absolute;
-  margin-top: -100px;
   width: 100%;
-  height: 720px;
-  top: 103px;
-  gap: 0px;
+  height: 100%;
+  object-fit: cover;
   opacity: 0.8;
 `;
 
 const CenteredTextDiv = styled.div`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -30,10 +27,11 @@ const Text = styled.h2`
   color: #ffffff;
 `;
 
-const Home: React.FC = () => {
+export default function Home() {
   return (
-    <Container>
+    <Container data-testid="home-page">
       <BackgroundImage
+        data-testid="background-image"
         src="/images/pokemon-hero.jpg"
         alt="Pokemon Hero Image"
       />
@@ -46,6 +44,4 @@ const Home: React.FC = () => {
       </CenteredTextDiv>
     </Container>
   );
-};
-
-export default Home;
+}

@@ -11,7 +11,7 @@ const inter = Inter({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={inter.className}>
+    <main style={{ width: "100%" }} className={inter.className}>
       <Layout>
         <Component {...pageProps} />
       </Layout>

@@ -23,6 +23,7 @@ const ModalTitle = styled.h2`
     font-weight: 700;
     color: #1d1d1d;
     line-height: 24px;
+    margin-bottom: 2rem;
     `
 const ModalDiscrption = styled.p`
     font-size: 14px;

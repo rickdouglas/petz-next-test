@@ -9,4 +9,10 @@ export const NavbarContainer = styled.header`
   align-items: center;
   padding: 20px;
   background-color: #f0f0f0;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    height: auto;
+    padding: 10px;
+  }
 `;

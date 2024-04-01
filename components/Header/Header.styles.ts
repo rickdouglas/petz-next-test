@@ -5,12 +5,19 @@ const HeaderContainer = styled.div`
     height: 165px;
     background:#E40F0F;
     padding: 24px;
+    @media (max-width: 768px) {
+    height: 130px;
+    padding: 1rem;
+  }
 `;
 
 const HeaderTitle = styled.h2`
     font-size: 32px;
     color: #ffffff;
     padding-bottom: 1rem;
+    @media (max-width: 768px) {
+    font-size: 28px;
+  }
 `;
 
 const HeaderDescription = styled.p`

@@ -5,14 +5,11 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const ButtonSpan = styled.span`
-  padding-left: 1em;
-`;
-
 const Buttons = styled.button<{ $primary?: boolean, $secondary?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 42px;
   width: ${({ $secondary }) => ($secondary ? "280px" : "")};
   color: ${({ $primary }) => ($primary ? "#000000" : "#ffffff")};
   color: ${({ $secondary }) => ($secondary ? "#1d1d1d" : "")};
@@ -32,4 +29,4 @@ const Buttons = styled.button<{ $primary?: boolean, $secondary?: boolean }>`
 `;
 
 
-export { Buttons, ButtonContainer, ButtonSpan };
+export { Buttons, ButtonContainer, };

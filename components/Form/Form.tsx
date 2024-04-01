@@ -19,6 +19,7 @@ import {
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 import useFetchData from "../../hooks/useFetchData";
+import { useForm } from "react-hook-form";
 
 interface FormProps {
   title: string;
@@ -32,21 +33,25 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const { register, handleSubmit, setValue } = useForm();
 
   const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDate(event.target.value);
+    setValue("selectedDate", event.target.value);
   };
 
   const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTime(event.target.value);
+    setValue("selectedTime", event.target.value);
   };
 
   useEffect(() => {
     setTotal(72.1 * pokemonCount);
   }, [pokemonCount]);
 
-  const handleSchedule = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmit = (event: React.FormEvent, data: any) => {
     event.preventDefault();
+    console.log(data);
     setShowModal(true);
   };
   const handleAddPokemon = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -62,7 +67,12 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
       <FormRowDiv>
         <FormGroup>
           <FormLabel htmlFor="name">Nome</FormLabel>
-          <FormInput placeholder="Digite seu nome" type="text" id="name" />
+          <FormInput
+            placeholder="Digite seu nome"
+            type="text"
+            id="name"
+            {...register("name")}
+          />
         </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="sobrenome">Sobrenome</FormLabel>
@@ -70,6 +80,7 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
             placeholder="Digite seu sobrenome"
             type="text"
             id="surname"
+            {...register("sobrenome")}
           />
         </FormGroup>
       </FormRowDiv>
@@ -128,7 +139,9 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
           <FormSelect
             id="data"
             value={selectedDate}
-            onChange={handleDateChange}
+            {...register("selectedDate", {
+              onChange: handleDateChange,
+            })}
           >
             <option value="">Selecione uma data</option>
             {dates.map((date, index) => (
@@ -142,8 +155,10 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
           <FormLabel htmlFor="time">Horario de atendimento</FormLabel>
           <FormSelect
             id="time"
-            value={selectedTime}
-            onChange={handleTimeChange}
+            value={selectedDate}
+            {...register("selectedTime", {
+              onChange: handleTimeChange,
+            })}
           >
             <option value="">Selecione um horário</option>
             {times.map((time, index) => (
@@ -184,11 +199,7 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
       </FormEndDiv>
       <FormEndDiv>
         <FormTotal>{`Valor Total: R$ ${total.toFixed(2)}`}</FormTotal>
-        <Button
-          onClick={handleSchedule}
-          id="schedule"
-          text="Concluir Agendamento"
-        />
+        <Button onClick={onSubmit} id="schedule" text="Concluir Agendamento" />
         {showModal && (
           <Modal
             date={selectedDate}

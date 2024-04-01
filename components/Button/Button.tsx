@@ -1,5 +1,5 @@
 import React from "react";
-import { Buttons, ButtonSpan } from "./Button.styles";
+import { Buttons } from "./Button.styles";
 
 interface ButtonProps {
   $primary?: boolean;
@@ -31,8 +31,14 @@ const Button: React.FC<ButtonProps> = ({
       onMouseLeave={onMouseLeave}
       onClick={onClick}
     >
-      {logo && <img src="/images/white-pokeball.svg" alt="Logo" />}
-      <ButtonSpan>{text}</ButtonSpan>
+      {logo && (
+        <img
+          src="/images/white-pokeball.svg"
+          alt="Logo"
+          style={{ paddingRight: "0.5rem" }}
+        />
+      )}
+      <span>{text}</span>
     </Buttons>
   );
 };
