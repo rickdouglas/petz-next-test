@@ -155,7 +155,7 @@ const Form: React.FC<FormProps> = ({ title, $taxa }) => {
           <FormLabel htmlFor="time">Horario de atendimento</FormLabel>
           <FormSelect
             id="time"
-            value={selectedDate}
+            value={selectedTime}
             {...register("selectedTime", {
               onChange: handleTimeChange,
             })}
