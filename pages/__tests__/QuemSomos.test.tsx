@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import QuemSomos from "../pages/quem-somos/index";
+import QuemSomos from "../quem-somos/index";
 
 describe("QuemSomos", () => {
   test("Should render correctly", () => {

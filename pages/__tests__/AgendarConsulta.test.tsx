@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import AgendarConsulta from "../pages/agendar-consulta/index";
+import AgendarConsulta from "../agendar-consulta/index";
 
 describe("AgendarConsulta", () => {
   test("Should render correctly", () => {
